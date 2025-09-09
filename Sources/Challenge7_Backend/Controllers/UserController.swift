@@ -35,9 +35,6 @@ struct UserController: RouteCollection{
         passwordProtected.post("login") { req -> User in
             try req.auth.require(User.self)
         }
-        
-        
-        
     }
     
     /// Fetches all users in data base
