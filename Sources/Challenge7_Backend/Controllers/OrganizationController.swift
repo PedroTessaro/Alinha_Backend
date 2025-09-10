@@ -14,6 +14,7 @@ struct OrganizationController: RouteCollection {
         let organizations = routes.grouped("organizations")
         
         organizations.post(use: create)
+        organizations.delete(use: remove)
     }
     
     @Sendable
@@ -34,5 +35,28 @@ struct OrganizationController: RouteCollection {
         let organizationDTOCreate = OrganizationDTO.Create(name: name, token: token)
         
         return organizationDTOCreate
+    }
+    
+    @Sendable
+    func remove(req: Request) async throws -> HTTPStatus {
+        
+        let body = try req.content.decode(OrganizationDTO.self)
+        
+        guard let id = body.id else {
+            throw Abort(.badRequest, reason: "Organization name was not informed")
+        }
+        
+        guard let name = body.name else {
+            throw Abort(.badRequest, reason: "Organization name was not informed")
+        }
+        
+        guard let token = body.token else {
+            throw Abort(.badRequest, reason: "Organization token was not informed")
+        }
+        
+        let organization = Organization(id: id, name: name, token: token)
+        try await organization.delete(on: req.db)
+        
+        return .ok
     }
 }
