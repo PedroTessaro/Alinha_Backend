@@ -14,3 +14,10 @@ struct OrganizationDTO: Content {
     var name: String?
     var token: String?
 }
+
+extension OrganizationDTO {
+    struct Create: Content {
+        var name: String?
+        var token: String?
+    }
+}

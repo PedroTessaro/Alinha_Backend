@@ -25,4 +25,11 @@ final class Organization: Model, @unchecked Sendable {
         self.name = name
         self.token = token
     }
+    
+    func toDTO() -> OrganizationDTO {
+        .init(
+            name: self.name,
+            token: self.token
+        )
+    }
 }
